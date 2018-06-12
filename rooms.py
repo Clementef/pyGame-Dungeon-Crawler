@@ -62,13 +62,15 @@ class Room1(Room):
 	 		wall = Wall(item[0],item[1],item[2],item[3],item[4])
 	 		self.wall_list.add(wall)
 
-class Room2(Room):
+class RandRoom(Room):
     """This creates all the walls in room 2"""
     def __init__(self):
         super().__init__()
- 
-        walls = [	[190, 50, 20, 500, BLACK],
-	                [590, 50, 20, 500, BLACK]	]
+
+        walls = []
+
+        for i in range(random.randint(0,10)):
+        	walls.append([20*random.randint(2,37),20*random.randint(2,27),20*random.randint(1,3),20*random.randint(1,3),BLACK])
  
         for item in walls:
             wall = Wall(item[0], item[1], item[2], item[3], item[4])

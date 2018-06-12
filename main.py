@@ -45,7 +45,7 @@ def main():
 	room = Room1()
 	rooms.append(room)
 
-	room = Room2()
+	room = RandRoom()
 	rooms.append(room)
 
 	current_room_no = 0
@@ -166,7 +166,12 @@ def main():
 				bullet.kill()
 
 			if current_room_no == len(rooms)-1:
-				current_room_no = 0
+				# add new room to end of list
+				room = RandRoom()
+				rooms.append(room)
+
+				# go to new room
+				current_room_no = len(rooms)-1
 				current_room = rooms[current_room_no]
 				player.rect.x = 0
 			else:

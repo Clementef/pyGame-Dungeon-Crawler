@@ -15,165 +15,9 @@ WHITE = (255,255,255)
 RED = (255,0,0)
 SIXTH_PI = 0.523598776
 
-class Wall(pygame.sprite.Sprite):
-	# constructor function
-	def __init__(self,x,y,width,height,color):
-		# call parent's constructor
-		pygame.sprite.Sprite.__init__(self)
-
-		# make a blue wall using parameters
-		self.image = pygame.Surface([width,height])
-		self.image.fill(color)
-
-		# set the position of the wall
-		self.rect = self.image.get_rect()
-		self.rect.y = y
-		self.rect.x = x
-
-class Player(pygame.sprite.Sprite):
-	# set speed vector
-	change_x = 0
-	change_y = 0
-
-	# constructor func
-	def __init__(self,x,y):
-
-		# call parent's constructor
-		pygame.sprite.Sprite.__init__(self)
-
-		# set height, width, set texture
-		self.image = pygame.Surface([30,30])
-		self.image.fill(WHITE)
-
-		# set pos
-		self.rect = self.image.get_rect()
-		self.rect.x = x 
-		self.rect.y = y
-
-	#change speed
-	def changeSpeed(self,x,y):
-		self.change_x += x
-		self.change_y += y
-
-	#calculate player's new position
-	def move(self,walls):
-
-		# horizontal movement
-		self.rect.x += self.change_x
-
-		#check for collisions
-		block_hit_list = pygame.sprite.spritecollide(self,walls,False)
-		for block in block_hit_list:
-			# set position if horiz collision
-			if self.change_x > 0:
-				self.rect.right = block.rect.left
-			else:
-				self.rect.left = block.rect.right
-
-		# vert movement
-		self.rect.y += self.change_y
-
-		# get collisions
-		block_hit_list = pygame.sprite.spritecollide(self,walls,False)
-		for block in block_hit_list:
-			# set position if vert collision
-			if self.change_y > 0:
-				self.rect.bottom = block.rect.top
-			else:
-				self.rect.top = block.rect.bottom
-
-class Projectile(pygame.sprite.Sprite):
-
-	vel_x = 0;
-	vel_y = 0;
-
-	def __init__(self,x,y,velx,vely):
-		pygame.sprite.Sprite.__init__(self)
-
-		self.image = pygame.Surface([15,15])
-		self.image.fill(RED)
-
-		# set pos
-		self.rect = self.image.get_rect()
-		self.rect.x = x 
-		self.rect.y = y
-		self.vel_x = velx
-		self.vel_y = vely
-
-	#calculate player's new position
-	def move(self,walls):
-
-		#change position
-		self.rect.x += self.vel_x
-		self.rect.y += self.vel_y
-
-		#kill if collides
-		if pygame.sprite.spritecollide(self,walls,False):
-			self.kill()
-
-class Room():
-	#lists of walls & enemies
-	wall_list = None
-	enemy_sprites = None
-
-	def __init__(self):
-		# constructor that creates wall lists
-		self.wall_list = pygame.sprite.Group()
-		self.enemy_sprites = pygame.sprite.Group()
-		base_walls = [	[0, 0, 20, 250, BLACK],
-						[0, 350, 20, 250, BLACK],
-						[780, 0, 20, 250, BLACK],
-						[780, 350, 20, 250, BLACK],
-						[20, 0, 760, 20, BLACK],
-						[20, 580, 760, 20, BLACK]	]
-
-		for item in base_walls:
-			wall = Wall(item[0],item[1],item[2],item[3],item[4])
-			self.wall_list.add(wall)
-
-class Room1(Room):
-	#creates walls in room1
-	def __init__(self):
-		Room.__init__(self)
-
-		walls = [	[390, 50, 20, 500, BLACK]	]
-
-		for item in walls:
-	 		wall = Wall(item[0],item[1],item[2],item[3],item[4])
-	 		self.wall_list.add(wall)
-
-class Room2(Room):
-    """This creates all the walls in room 2"""
-    def __init__(self):
-        super().__init__()
- 
-        walls = [	[190, 50, 20, 500, BLACK],
-	                [590, 50, 20, 500, BLACK]	]
- 
-        for item in walls:
-            wall = Wall(item[0], item[1], item[2], item[3], item[4])
-            self.wall_list.add(wall)
- 
- 
-class Room3(Room):
-    """This creates all the walls in room 3"""
-    def __init__(self):
-        super().__init__()
- 
-        walls = [		]
- 
-        for item in walls:
-            wall = Wall(item[0], item[1], item[2], item[3], item[4])
-            self.wall_list.add(wall)
- 
-        for x in range(100, 800, 100):
-            for y in range(50, 451, 300):
-                wall = Wall(x, y, 20, 200, BLACK)
-                self.wall_list.add(wall)
- 
-        for x in range(150, 700, 100):
-            wall = Wall(x, 200, 20, 200, BLACK)
-            self.wall_list.add(wall)
+# import classes from other files
+from rooms import *
+from player import *
 
 def main():
 	# initialize pygame
@@ -282,6 +126,7 @@ def main():
 
 
 					for i in range(5):
+						#calculate a new angle with scatter
 						scatterAngle = theta + random.uniform(-SIXTH_PI,SIXTH_PI)
 
 						# calculate polar coordinates for bullet vel

@@ -6,7 +6,7 @@ class Player(pygame.sprite.Sprite):
 	change_y = 0
 
 	# constructor func
-	def __init__(self,x,y):
+	def __init__(self):
 
 		# call parent's constructor
 		pygame.sprite.Sprite.__init__(self)
@@ -17,8 +17,8 @@ class Player(pygame.sprite.Sprite):
 
 		# set pos
 		self.rect = self.image.get_rect()
-		self.rect.x = x 
-		self.rect.y = y
+		self.rect.x = 400-(self.rect.width/2)
+		self.rect.y = 300-(self.rect.height/2)
 
 	#change speed
 	def changeSpeed(self,x,y):
@@ -27,7 +27,6 @@ class Player(pygame.sprite.Sprite):
 
 	#calculate player's new position
 	def move(self,walls):
-
 		# horizontal movement
 		self.rect.x += self.change_x
 

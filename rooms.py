@@ -35,12 +35,28 @@ class Room():
 			wall = Wall(item[0],item[1],item[2],item[3],item[4])
 			self.wall_list.add(wall)
 
+class spawnRoom(Room):
+    """This creates all the walls in room 3"""
+    def __init__(self):
+        super().__init__()
+ 
+        walls = [	[0    ,250  ,20  ,100  ,BLACK]	]
+ 
+        for item in walls:
+            wall = Wall(item[0], item[1], item[2], item[3], item[4])
+            self.wall_list.add(wall)
+
 class Room1(Room):
 	#creates walls in room1
 	def __init__(self):
 		Room.__init__(self)
 
-		walls = [	[390, 50, 20, 500, BLACK]	]
+		walls = [	[20*8 ,20*3 ,20  ,20*8 ,BLACK],
+					[20*8 ,20*17,20  ,20*8 ,BLACK],
+					[20*17,20*8 ,20*8,20*13,BLACK],
+					[20*28,20*10,20*4,20   ,BLACK],
+					[20*28,20*11,20  ,20*7 ,BLACK],
+					[20*28,20*18,20*4,20   ,BLACK]	]
 
 		for item in walls:
 	 		wall = Wall(item[0],item[1],item[2],item[3],item[4])
@@ -56,25 +72,4 @@ class Room2(Room):
  
         for item in walls:
             wall = Wall(item[0], item[1], item[2], item[3], item[4])
-            self.wall_list.add(wall)
- 
- 
-class Room3(Room):
-    """This creates all the walls in room 3"""
-    def __init__(self):
-        super().__init__()
- 
-        walls = [		]
- 
-        for item in walls:
-            wall = Wall(item[0], item[1], item[2], item[3], item[4])
-            self.wall_list.add(wall)
- 
-        for x in range(100, 800, 100):
-            for y in range(50, 451, 300):
-                wall = Wall(x, y, 20, 200, BLACK)
-                self.wall_list.add(wall)
- 
-        for x in range(150, 700, 100):
-            wall = Wall(x, 200, 20, 200, BLACK)
             self.wall_list.add(wall)

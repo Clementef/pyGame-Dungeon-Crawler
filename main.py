@@ -1,14 +1,6 @@
 import pygame,math,random
 
-# Bullet vars
-primaryBulletVel = 15
-secondaryBulletVel = 5
-bulletDist = (30*math.sqrt(2))/2+(15*math.sqrt(2))/2
-
-#Time control
-timeControl = 60
-
-# Global Constants
+# UNIVERSAL Constants
 BLACK = (0,0,0)
 GRAY20 = (51,51,51)
 WHITE = (255,255,255)
@@ -19,6 +11,16 @@ SIXTH_PI = 0.523598776
 from rooms import *
 from player import *
 
+# Bullet vars
+primaryBulletVel = 15
+secondaryBulletVel = 5
+bulletDist = (30*math.sqrt(2))/2+(15*math.sqrt(2))/2
+
+#Time control
+timeControl = 60
+
+
+
 def main():
 	# initialize pygame
 	pygame.init()
@@ -28,7 +30,7 @@ def main():
 	pygame.display.set_caption("Platformer")
 
 	#create player
-	player = Player(50,50)
+	player = Player()
 	movingsprites = pygame.sprite.Group()
 	movingsprites.add(player)
 
@@ -37,13 +39,13 @@ def main():
 	# create room list
 	rooms = []
 
+	room = spawnRoom()
+	rooms.append(room)
+
 	room = Room1()
 	rooms.append(room)
 
 	room = Room2()
-	rooms.append(room)
-
-	room = Room3()
 	rooms.append(room)
 
 	current_room_no = 0
@@ -147,18 +149,18 @@ def main():
 
 
 		# change walls and kill all bullets if going through door
-		if player.rect.x < -30:
+		if player.rect.x < -player.rect.width:
 			for bullet in bullets:
 				bullet.kill()
 
 			if current_room_no == 0:
 				current_room_no = len(rooms)-1
 				current_room = rooms[current_room_no]
-				player.rect.x = 770
+				player.rect.x = 800-player.rect.width
 			else:
 				current_room_no -= 1
 				current_room = rooms[current_room_no]
-				player.rect.x = 770
+				player.rect.x = 800-player.rect.width
 		if player.rect.x > 800:
 			for bullet in bullets:
 				bullet.kill()

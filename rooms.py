@@ -1,4 +1,6 @@
 from main import *
+from mapReader import *
+from maps import *
 
 class Wall(pygame.sprite.Sprite):
 	# constructor function
@@ -24,19 +26,18 @@ class Room():
 		# constructor that creates wall lists
 		self.wall_list = pygame.sprite.Group()
 		self.enemy_sprites = pygame.sprite.Group()
-		base_walls = [	[0, 0, 20, 250, BLACK],
+		default_walls = [	[0, 0, 20, 250, BLACK],
 						[0, 350, 20, 250, BLACK],
 						[780, 0, 20, 250, BLACK],
 						[780, 350, 20, 250, BLACK],
 						[20, 0, 760, 20, BLACK],
 						[20, 580, 760, 20, BLACK]	]
 
-		for item in base_walls:
+		for item in default_walls:
 			wall = Wall(item[0],item[1],item[2],item[3],item[4])
 			self.wall_list.add(wall)
 
 class spawnRoom(Room):
-    """This creates all the walls in room 3"""
     def __init__(self):
         super().__init__()
  
@@ -47,7 +48,6 @@ class spawnRoom(Room):
             self.wall_list.add(wall)
 
 class Room1(Room):
-	#creates walls in room1
 	def __init__(self):
 		Room.__init__(self)
 
@@ -63,14 +63,23 @@ class Room1(Room):
 	 		self.wall_list.add(wall)
 
 class RandRoom(Room):
-    """This creates all the walls in room 2"""
     def __init__(self):
         super().__init__()
 
         walls = []
 
-        for i in range(random.randint(0,10)):
-        	walls.append([20*random.randint(2,37),20*random.randint(2,27),20*random.randint(1,3),20*random.randint(1,3),BLACK])
+        # get walls from the chosen map
+        # readWalls = readMap(map number)
+        readWalls = readRandMap()
+
+        # add color to wall data, add walls to walls list
+        for i in readWalls[0]:
+        	i.append(BLACK)
+        	walls.append(i)
+
+        # Generate completely random walls
+        # for i in range(random.randint(0,10)):
+        # 	walls.append([20*random.randint(2,37),20*random.randint(2,27),20*random.randint(1,3),20*random.randint(1,3),BLACK])
  
         for item in walls:
             wall = Wall(item[0], item[1], item[2], item[3], item[4])

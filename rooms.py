@@ -39,9 +39,18 @@ class Room():
 
 class spawnRoom(Room):
     def __init__(self):
-        super().__init__()
+        Room.__init__(self)
  
         walls = [	[0    ,250  ,20  ,100  ,BLACK]	]
+
+        # get walls from the chosen map
+        readWalls = readMap(spawnMap)
+
+        # add color to wall data, add walls to walls list
+        for i in readWalls[0]:
+        	i.append(BLACK)
+        	walls.append(i)
+
  
         for item in walls:
             wall = Wall(item[0], item[1], item[2], item[3], item[4])
@@ -51,36 +60,56 @@ class Room1(Room):
 	def __init__(self):
 		Room.__init__(self)
 
-		walls = [	[20*8 ,20*3 ,20  ,20*8 ,BLACK],
-					[20*8 ,20*17,20  ,20*8 ,BLACK],
-					[20*17,20*8 ,20*8,20*13,BLACK],
-					[20*28,20*10,20*4,20   ,BLACK],
-					[20*28,20*11,20  ,20*7 ,BLACK],
-					[20*28,20*18,20*4,20   ,BLACK]	]
+		walls = []
+		enemies = []
+
+		# get walls from the chosen map
+		positionsMap = readMap(firstMap)
+		readWalls = positionsMap[0]
+		readEnemies = positionsMap[1]
+
+		# add color to wall data, add walls to walls list
+		for i in readWalls:
+			i.append(BLACK)
+			walls.append(i)
 
 		for item in walls:
 	 		wall = Wall(item[0],item[1],item[2],item[3],item[4])
 	 		self.wall_list.add(wall)
 
+ 		# add read enemies to enemies list, add that to master list
+		for i in readEnemies:
+			enemies.append(i)
+
+		for item in enemies:
+			enemySprite = Mob(item[0],item[1])
+			self.enemy_sprites.add(enemySprite)
+
 class RandRoom(Room):
-    def __init__(self):
-        super().__init__()
+	def __init__(self):
+		Room.__init__(self)
 
-        walls = []
+		walls = []
+		enemies = []
 
-        # get walls from the chosen map
-        # readWalls = readMap(map number)
-        readWalls = readRandMap()
+		# get walls from the chosen map
+		positionsMap = readMap(firstMap)
+		readWalls = positionsMap[0]
+		readEnemies = positionsMap[1]
 
-        # add color to wall data, add walls to walls list
-        for i in readWalls[0]:
-        	i.append(BLACK)
-        	walls.append(i)
+		# add color to wall data, add walls to walls list
+		for i in readWalls:
+			i.append(BLACK)
+			walls.append(i)
 
-        # Generate completely random walls
-        # for i in range(random.randint(0,10)):
-        # 	walls.append([20*random.randint(2,37),20*random.randint(2,27),20*random.randint(1,3),20*random.randint(1,3),BLACK])
- 
-        for item in walls:
-            wall = Wall(item[0], item[1], item[2], item[3], item[4])
-            self.wall_list.add(wall)
+		for item in walls:
+	 		wall = Wall(item[0],item[1],item[2],item[3],item[4])
+	 		self.wall_list.add(wall)
+
+ 		# add read enemies to enemies list, add that to master list
+		for i in readEnemies:
+			enemies.append(i)
+
+		for item in enemies:
+			enemySprite = Mob(item[0],item[1])
+			self.enemy_sprites.add(enemySprite)

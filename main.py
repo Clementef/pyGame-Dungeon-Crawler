@@ -5,21 +5,29 @@ BLACK = (0,0,0)
 GRAY20 = (51,51,51)
 WHITE = (255,255,255)
 RED = (255,0,0)
+PURPLE = (97, 0, 255)
+
 SIXTH_PI = 0.523598776
 
-# import classes from other files
-from rooms import *
-from player import *
+# Player vars
+playerSize = 30
+playerSpeed = 5
+
+#Enemy vars
+enemySize = 20
 
 # Bullet vars
 primaryBulletVel = 15
-secondaryBulletVel = 5
+secondaryBulletVel = 6
 bulletDist = (30*math.sqrt(2))/2+(15*math.sqrt(2))/2
 
 #Time control
 timeControl = 60
 
-
+# import classes from other files
+from rooms import *
+from player import *
+from mob import *
 
 def main():
 	# initialize pygame
@@ -27,7 +35,7 @@ def main():
 
 	# create window
 	window = pygame.display.set_mode([800,600])
-	pygame.display.set_caption("Platformer")
+	pygame.display.set_caption("Dungeon Crawler")
 
 	#create player
 	player = Player()
@@ -43,9 +51,6 @@ def main():
 	rooms.append(room)
 
 	room = Room1()
-	rooms.append(room)
-
-	room = RandRoom()
 	rooms.append(room)
 
 	current_room_no = 0
@@ -66,13 +71,13 @@ def main():
 
 			elif event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-					player.changeSpeed(-5,0)
+					player.changeSpeed(-playerSpeed,0)
 				if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-					player.changeSpeed(5,0)
+					player.changeSpeed(playerSpeed,0)
 				if event.key == pygame.K_UP or event.key == pygame.K_w:
-					player.changeSpeed(0,-5)
+					player.changeSpeed(0,-playerSpeed)
 				if event.key == pygame.K_DOWN or event.key == pygame.K_s:
-					player.changeSpeed(0,5)
+					player.changeSpeed(0,playerSpeed)
 
 				# slow time
 				if event.key == pygame.K_LSHIFT:
@@ -80,13 +85,13 @@ def main():
 
 			elif event.type == pygame.KEYUP:
 				if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-					player.changeSpeed(5,0)
+					player.changeSpeed(playerSpeed,0)
 				if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-					player.changeSpeed(-5,0)
+					player.changeSpeed(-playerSpeed,0)
 				if event.key == pygame.K_UP or event.key == pygame.K_w:
-					player.changeSpeed(0,5)
+					player.changeSpeed(0,playerSpeed)
 				if event.key == pygame.K_DOWN or event.key == pygame.K_s:
-					player.changeSpeed(0,-5)
+					player.changeSpeed(0,-playerSpeed)
 
 				# return time to normal
 				if event.key == pygame.K_LSHIFT:
@@ -143,9 +148,16 @@ def main():
 						movingsprites.add(bullet)
 						bullets.add(bullet)
 
+		# update bullets
+		for bullet in bullets:
+			bullet.move(current_room.wall_list)
 
-		# player collisions for current room
-		player.move(current_room.wall_list)
+		# update enemies
+		for enemy in current_room.enemy_sprites:
+			enemy.update(current_room.wall_list,bullets)
+
+		# update player
+		player.update(current_room.wall_list)
 
 
 		# change walls and kill all bullets if going through door
@@ -179,15 +191,13 @@ def main():
 				current_room = rooms[current_room_no]
 				player.rect.x = 0
 
-		# Bullet Collisions
-		for bullet in bullets:
-			bullet.move(current_room.wall_list)
-
 		# draw background and sprites, time goes forward
 		window.fill(GRAY20)
 		movingsprites.draw(window)
 		current_room.wall_list.draw(window)
+		current_room.enemy_sprites.draw(window)
 		pygame.display.flip()
+		print(rooms)
 
 		clock.tick(timeControl)
 

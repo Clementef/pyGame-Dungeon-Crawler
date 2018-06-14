@@ -1,4 +1,5 @@
 from maps import *
+from main import *
 import random
 
 """
@@ -27,10 +28,16 @@ def readMap(map):
 			type = map[i][j]
 			position = tilesToScreen(j,i)
 
+
+			# if wall
 			if type == 1:
 				walls.append([position[0],position[1],40,40])
+
+			#if enemy
 			if type == 2:
-				pass
+				enemies.append([position[0]+((40-enemySize)/2),position[1]+((40-enemySize)/2)])
+
+			# if powerup
 			if type == 3:
 				pass
 
@@ -39,6 +46,5 @@ def readMap(map):
 
 # reads a random map
 def readRandMap():
-	rand = random.randint(0,len(mapsList)-1)
-	return readMap(mapsList[rand])
-	print(rand)
+	rand = random.randint(0,len(randMapsList)-1)
+	return readMap(randMapsList[rand])

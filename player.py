@@ -12,7 +12,7 @@ class Player(pygame.sprite.Sprite):
 		pygame.sprite.Sprite.__init__(self)
 
 		# set height, width, set texture
-		self.image = pygame.Surface([30,30])
+		self.image = pygame.Surface([playerSize,playerSize])
 		self.image.fill(WHITE)
 
 		# set pos
@@ -26,7 +26,7 @@ class Player(pygame.sprite.Sprite):
 		self.change_y += y
 
 	#calculate player's new position
-	def move(self,walls):
+	def update(self,walls):
 		# horizontal movement
 		self.rect.x += self.change_x
 
@@ -42,7 +42,6 @@ class Player(pygame.sprite.Sprite):
 		# vert movement
 		self.rect.y += self.change_y
 
-		# get collisions
 		block_hit_list = pygame.sprite.spritecollide(self,walls,False)
 		for block in block_hit_list:
 			# set position if vert collision
@@ -60,7 +59,7 @@ class Projectile(pygame.sprite.Sprite):
 		pygame.sprite.Sprite.__init__(self)
 
 		self.image = pygame.Surface([15,15])
-		self.image.fill(RED)
+		self.image.fill(PURPLE)
 
 		# set pos
 		self.rect = self.image.get_rect()
